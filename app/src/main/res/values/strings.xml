@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Sweet Calc</string>
-
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_show_insulin">Insulin Dosage</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_show_insulin">ShowInsulin</string>
+    <string-array name="carbUnitArray">
+        <item>servings</item>
+        <item>grams</item>
+    </string-array>
 </resources>

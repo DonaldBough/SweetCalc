@@ -3,12 +3,15 @@ package edu.purdue.dbough.diabetescalulator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {
@@ -17,10 +20,11 @@ public class MainActivity extends Activity {
     EditText targetSugarField;
     EditText correctiveField;
     EditText carbField;
+    Spinner carbUnitSpinner;
 
-    private double targetSugar;
+    private int targetSugar;
     private double measuredSugar;
-    private double correctiveFactor;
+    private int correctiveFactor;
     private double carbGramsAmount;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,29 @@ public class MainActivity extends Activity {
         measuredSugarField = (EditText)findViewById(R.id.measuredSugarField);
         correctiveField = (EditText)findViewById(R.id.correctionField);
         carbField = (EditText)findViewById(R.id.carbsField);
+
+        carbUnitSpinner = (Spinner)findViewById(R.id.carbUnitSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.carbUnitArray, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        carbUnitSpinner.setAdapter(adapter);
+
+        //Load preset target sugar and corrective factor
+        SharedPreferences sharedPref = getApplicationContext()
+                .getSharedPreferences("com.mycompany.DiabetesCalculator.PREFERENCE", MODE_PRIVATE);
+        int defaultTargetSugar =
+                sharedPref.getInt("com.mycompany.DiabetesCalculator.TARGET", 0);
+        int defaultCorrectiveFactor =
+                sharedPref.getInt("com.mycompany.DiabetesCalculator.FACTOR", 0);
+        int defaultSpinnerOption =
+                sharedPref.getInt("com.mycompany.DiabetesCalculator.UNIT", 0);
+
+        if (defaultTargetSugar != 0)
+            targetSugarField.setText(String.valueOf(defaultTargetSugar));
+        if (defaultCorrectiveFactor != 0)
+            correctiveField.setText(String.valueOf(defaultCorrectiveFactor));
+        if (defaultSpinnerOption != 0)
+            carbUnitSpinner.setSelection(defaultSpinnerOption);
         return true;
     }
 
@@ -57,24 +84,38 @@ public class MainActivity extends Activity {
 
     public void solveFormula (View view) {
         double fakeBundle[] = new double[4];
+        int currSelectedSpinner = carbUnitSpinner.getSelectedItemPosition();
+        Context context = getApplicationContext();
 
        try {
-           targetSugar = Double.parseDouble(targetSugarField.getText().toString());
+           targetSugar = Integer.parseInt(targetSugarField.getText().toString());
            measuredSugar = Double.parseDouble(measuredSugarField.getText().toString());
-           correctiveFactor = Double.parseDouble(correctiveField.getText().toString());
+           correctiveFactor = Integer.parseInt(correctiveField.getText().toString());
            carbGramsAmount = Double.parseDouble(carbField.getText().toString());
+
+           //Hardcoded serving size is 15g per serving
+           if (currSelectedSpinner == 1)
+               carbGramsAmount /= 15;
 
            fakeBundle[0] = targetSugar;
            fakeBundle[1] = measuredSugar;
            fakeBundle[2] = correctiveFactor;
            fakeBundle[3] = carbGramsAmount;
 
+           //Save Target and Corrective Factor values
+           SharedPreferences sharedPref = context.getSharedPreferences(
+                   "com.mycompany.DiabetesCalculator.PREFERENCE", Context.MODE_PRIVATE);
+           SharedPreferences.Editor editor = sharedPref.edit();
+           editor.putInt("com.mycompany.DiabetesCalculator.TARGET", targetSugar);
+           editor.putInt("com.mycompany.DiabetesCalculator.FACTOR", correctiveFactor);
+           editor.putInt("com.mycompany.DiabetesCalculator.UNIT", currSelectedSpinner);
+           editor.commit();
+
            Intent intent = new Intent (this, ShowInsulin.class);
            intent.putExtra(EXTRA_MESSAGE, fakeBundle);
            startActivity(intent);
        }
        catch (Exception e) {
-           Context context = getApplicationContext();
            Toast t = Toast.makeText(context, "Whoops, forgot a number?", Toast.LENGTH_SHORT);
            t.show();
        }

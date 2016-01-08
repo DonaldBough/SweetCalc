@@ -7,26 +7,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 public class ShowInsulin extends Activity {
     private double targetSugar;
     private double measuredSugar;
     private double correctiveFactor;
     private double carbGramsAmount;
     private double finalUnits;
-    TextView insulinUnits;
+
+    TextView insulinUnitsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_insulin);
 
+        insulinUnitsTextView = (TextView)findViewById(R.id.insulinUnitsTextView);
         Intent intent = getIntent();
         double[] fakeBundle = intent.getDoubleArrayExtra("com.mycompany.DiabetesCalculator.MESSAGE");
         targetSugar = fakeBundle[0];
         measuredSugar = fakeBundle[1];
         correctiveFactor = fakeBundle[2];
         carbGramsAmount = fakeBundle[3];
-        carbGramsAmount /= 15.0;
 
         if (measuredSugar - targetSugar < 0) {
             finalUnits = carbGramsAmount;
@@ -35,8 +38,11 @@ public class ShowInsulin extends Activity {
         else {
             finalUnits = ((measuredSugar - targetSugar) / correctiveFactor) + carbGramsAmount;
         }
-        insulinUnits = (TextView)findViewById(R.id.insulinUnitsTextView);
-        insulinUnits.setText(String.valueOf(finalUnits) + " units");
+        //Formatting final output for insulin dosage
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        String finalUnitsStr = df.format(finalUnits);
+        insulinUnitsTextView.setText(finalUnitsStr + " units");
     }
 
     @Override

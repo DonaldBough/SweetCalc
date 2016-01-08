@@ -30,12 +30,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Carbs (grams)"
+        android:text="Carbs in "
         android:id="@+id/carbsTextView"
         android:textSize="20dp"
         android:textColor="#333333"
         android:layout_below="@+id/measuredSugarField"
         android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/carbUnitSpinner"
+        android:layout_alignTop="@+id/carbsTextView"
+        android:layout_alignStart="@+id/button" />
 
     <EditText
         android:layout_width="wrap_content"
