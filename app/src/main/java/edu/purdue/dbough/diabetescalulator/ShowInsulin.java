@@ -1,10 +1,15 @@
 package edu.purdue.dbough.diabetescalulator;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
@@ -15,8 +20,11 @@ public class ShowInsulin extends Activity {
     private double correctiveFactor;
     private double carbGramsAmount;
     private double finalUnits;
+    private double slidingFactorUnits;
 
     TextView insulinUnitsTextView;
+    TextView foodTextView;
+    TextView slidingFactorTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +32,8 @@ public class ShowInsulin extends Activity {
         setContentView(R.layout.activity_show_insulin);
 
         insulinUnitsTextView = (TextView)findViewById(R.id.insulinUnitsTextView);
+        DecimalFormat df = new DecimalFormat();
+
         Intent intent = getIntent();
         double[] fakeBundle = intent.getDoubleArrayExtra("com.mycompany.DiabetesCalculator.MESSAGE");
         targetSugar = fakeBundle[0];
@@ -38,11 +48,20 @@ public class ShowInsulin extends Activity {
         else {
             finalUnits = ((measuredSugar - targetSugar) / correctiveFactor) + carbGramsAmount;
         }
+
         //Formatting final output for insulin dosage
-        DecimalFormat df = new DecimalFormat();
         df.setMaximumFractionDigits(2);
         String finalUnitsStr = df.format(finalUnits);
         insulinUnitsTextView.setText(finalUnitsStr + " units");
+
+        //Showing how much units came from each part
+        foodTextView = (TextView)findViewById(R.id.slidingFactorTextView);
+        String carbGramAmountStr = df.format(carbGramsAmount);
+        foodTextView.setText("From Food: " + carbGramAmountStr + " units");
+        slidingFactorTextView = (TextView)findViewById(R.id.foodTextView);
+        slidingFactorUnits = finalUnits - carbGramsAmount;
+        String slidingFactorUnitsStr = df.format(slidingFactorUnits);
+        slidingFactorTextView.setText("Sliding Factor: " + slidingFactorUnitsStr + " units");
     }
 
     @Override
@@ -65,5 +84,28 @@ public class ShowInsulin extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class MyView extends View {
+        public MyView(Context context) {
+            super(context);
+            // TODO Auto-generated constructor stub
+        }
+
+        @Override
+        protected void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+            int x = getWidth();
+            int y = getHeight();
+            int radius;
+            radius = 100;
+            Paint paint = new Paint();
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(Color.WHITE);
+            canvas.drawPaint(paint);
+            // Use Color.parseColor to define HTML colors
+            paint.setColor(Color.parseColor("#CD5C5C"));
+            canvas.drawCircle(x / 2, y / 2, radius, paint);
+        }
     }
 }
