@@ -14,6 +14,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.Calendar;
+import java.util.Date;
+
 public class MainActivity extends Activity {
     public final static String EXTRA_MESSAGE = "com.mycompany.DiabetesCalculator.MESSAGE";
     EditText measuredSugarField;
@@ -110,6 +115,27 @@ public class MainActivity extends Activity {
            editor.putInt("com.mycompany.DiabetesCalculator.FACTOR", correctiveFactor);
            editor.putInt("com.mycompany.DiabetesCalculator.UNIT", currSelectedSpinner);
            editor.commit();
+
+           //Save blood sugar values for analytical algorithms one day
+           String fileName = "BloodSugarValues";
+           FileOutputStream outputStream;
+           try {
+               outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+               Date time = Calendar.getInstance().getTime();
+               String currTime = time.toString();
+               //Saves time, measured blood sugar, target blood sugar, carbs, & corrective factor
+               String outputData = (currTime + ","
+                       + measuredSugarField.getText().toString() + ","
+                       + targetSugarField.getText().toString() + ","
+                       + carbField.getText().toString() + ","
+                       + correctiveFactor + "\n");
+               outputStream.write(outputData.getBytes());
+               outputStream.close();
+           } catch (Exception e) {
+               String message = "Whoops, couldn't save your numbers";
+               Toast t = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+               t.show();
+           }
 
            Intent intent = new Intent (this, ShowInsulin.class);
            intent.putExtra(EXTRA_MESSAGE, fakeBundle);

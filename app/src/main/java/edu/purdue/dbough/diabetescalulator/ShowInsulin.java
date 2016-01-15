@@ -52,16 +52,31 @@ public class ShowInsulin extends Activity {
         //Formatting final output for insulin dosage
         df.setMaximumFractionDigits(2);
         String finalUnitsStr = df.format(finalUnits);
-        insulinUnitsTextView.setText(finalUnitsStr + " units");
+        if (finalUnits == 1){
+            insulinUnitsTextView.setText(finalUnitsStr + " unit");
+        }
+        else {
+            insulinUnitsTextView.setText(finalUnitsStr + " units");
+        }
 
         //Showing how much units came from each part
         foodTextView = (TextView)findViewById(R.id.slidingFactorTextView);
         String carbGramAmountStr = df.format(carbGramsAmount);
-        foodTextView.setText("From Food: " + carbGramAmountStr + " units");
+        if (carbGramsAmount == 1) {
+            foodTextView.setText("From Food: " + carbGramAmountStr + " unit");
+        }
+        else {
+            foodTextView.setText("From Food: " + carbGramAmountStr + " units");
+        }
         slidingFactorTextView = (TextView)findViewById(R.id.foodTextView);
         slidingFactorUnits = finalUnits - carbGramsAmount;
         String slidingFactorUnitsStr = df.format(slidingFactorUnits);
-        slidingFactorTextView.setText("Sliding Factor: " + slidingFactorUnitsStr + " units");
+        if (slidingFactorUnits == 1) {
+            slidingFactorTextView.setText("Sliding Factor: " + slidingFactorUnitsStr + " unit");
+        }
+        else {
+            slidingFactorTextView.setText("Sliding Factor: " + slidingFactorUnitsStr + " units");
+        }
     }
 
     @Override
