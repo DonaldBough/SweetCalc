@@ -48,7 +48,6 @@ public class ShowInsulin extends Activity {
         else {
             finalUnits = ((measuredSugar - targetSugar) / correctiveFactor) + carbGramsAmount;
         }
-
         //Formatting final output for insulin dosage
         df.setMaximumFractionDigits(2);
         String finalUnitsStr = df.format(finalUnits);
