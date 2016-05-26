@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="pref_TargetBloodSugar"
+        android:title="Target Blood Sugar"
+        android:defaultValue="100" />
+    <EditTextPreference
+        android:key="pref_CorrectionFactor"
+        android:title="Correction Factor"
+        android:defaultValue="50" />
+</PreferenceScreen>
