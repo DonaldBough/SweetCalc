@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.purdue.dbough.diabetescalulator.SignAgreement">
+
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:text="I Agree"
+        android:id="@+id/IAgreeButton"
+        android:onClick="sendMainActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="65dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/legal_Agreement"
+        android:id="@+id/IAgreeTextView"
+        android:layout_above="@+id/IAgreeButton"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="143dp" />
+
+</RelativeLayout>

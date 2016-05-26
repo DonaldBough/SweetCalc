@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,7 +33,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //Check if agreement was... agreed to
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences
+                ("com.mycompany.DiabetesCalculator.IS_INSTALLED", Context.MODE_PRIVATE);
+
+        String agreementString = sharedPref.getString
+                ("com.mycompany.DiabetesCalculator.IS_INSTALLED", "Agreement Unsigned");
+        if (agreementString.equals("Agreement Unsigned"))
+            setContentView(R.layout.activity_sign_agreement);
+        else
+            setContentView(R.layout.activity_main);
     }
 
     @Override

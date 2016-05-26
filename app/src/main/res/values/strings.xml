@@ -1,9 +1,13 @@
 <resources>
     <string name="app_name">Sweet Calc</string>
+    <string name="legal_Agreement"> By using this application, I understand SweetCalc is in Beta and not a completely functional health application, or an application regulated by medical professionals. I will not hold developers for any complications that come from my misuse of the app or faulty functioning of the app.</string>
     <string name="title_activity_show_insulin">Insulin Dosage</string>
     <string name="action_settings">Settings</string>
     <string-array name="carbUnitArray">
         <item>servings</item>
         <item>grams</item>
     </string-array>
+    <string name="title_activity_sign_agreement">Agreement</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

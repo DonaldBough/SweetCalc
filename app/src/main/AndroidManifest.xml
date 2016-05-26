@@ -20,6 +20,10 @@
             android:name=".ShowInsulin"
             android:label="@string/title_activity_show_insulin" >
         </activity>
+        <activity
+            android:name=".SignAgreement"
+            android:label="@string/title_activity_sign_agreement" >
+        </activity>
     </application>
 
 </manifest>
