@@ -24,6 +24,10 @@
             android:name=".SignAgreement"
             android:label="@string/title_activity_sign_agreement" >
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

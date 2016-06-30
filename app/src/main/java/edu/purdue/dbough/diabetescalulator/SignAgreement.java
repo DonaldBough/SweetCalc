@@ -2,10 +2,13 @@ package edu.purdue.dbough.diabetescalulator;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class SignAgreement extends Activity {
 
@@ -36,12 +39,18 @@ public class SignAgreement extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void sendMainActivity() {
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences
-                ("com.mycompany.DiabetesCalculator.IS_INSTALLED", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("com.mycompany.DiabetesCalculator.TARGET", "User has agreed to the " +
-                "following: \n" + getString(R.string.legal_Agreement));
-        editor.commit();
+
+    //Check if terms were agreed to already
+    public static boolean AgreedToTerms(Context context) {
+        SharedPreferences agreementPreference = null;
+        String isAgreementSigned;
+
+        agreementPreference = context.getSharedPreferences
+                ("com.sweetcalc.DiabetesCalculator.IS_INSTALLED", Context.MODE_PRIVATE);
+        isAgreementSigned = agreementPreference.getString
+                ("com.sweetcalc.DiabetesCalculator.IS_INSTALLED", "Agreement Unsigned");
+
+        if (isAgreementSigned.equals("Agreement Unsigned")) return false;
+        return true;
     }
 }
