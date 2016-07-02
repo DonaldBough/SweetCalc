@@ -11,71 +11,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
 
 public class ShowInsulin extends Activity {
-    private double targetSugar;
-    private double measuredSugar;
-    private double correctiveFactor;
-    private double carbGramsAmount;
-    private double finalUnits;
-    private double slidingFactorUnits;
-
     TextView insulinUnitsTextView;
     TextView foodTextView;
     TextView slidingFactorTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_insulin);
 
-        insulinUnitsTextView = (TextView)findViewById(R.id.insulinUnitsTextView);
-        DecimalFormat df = new DecimalFormat();
-
         Intent intent = getIntent();
-        double[] fakeBundle = intent.getDoubleArrayExtra("com.mycompany.DiabetesCalculator.MESSAGE");
-        targetSugar = fakeBundle[0];
-        measuredSugar = fakeBundle[1];
-        correctiveFactor = fakeBundle[2];
-        carbGramsAmount = fakeBundle[3];
+        Bundle insulinBundle = intent.getBundleExtra(MainActivity.INSULIN_MESSAGE);
+        double insulinTotal = insulinBundle.getDouble("insulinTotal");
+        double insulinFromCarbs = insulinBundle.getDouble("insulinFromCarbs");
+        double insulinFromBloodSugar = insulinBundle.getDouble("insulinFromBloodSugar");
+        insulinUnitsTextView = (TextView) findViewById(R.id.insulinUnitsTextView);
+        foodTextView = (TextView) findViewById(R.id.foodTextView);
+        slidingFactorTextView = (TextView) findViewById(R.id.slidingFactorTextView);
 
-        if (measuredSugar - targetSugar < 0) {
-            finalUnits = carbGramsAmount;
-        }
-
-        else {
-            finalUnits = ((measuredSugar - targetSugar) / correctiveFactor) + carbGramsAmount;
-        }
-        //Formatting final output for insulin dosage
-        df.setMaximumFractionDigits(2);
-        String finalUnitsStr = df.format(finalUnits);
-        if (finalUnits == 1){
-            insulinUnitsTextView.setText(finalUnitsStr + " unit");
-        }
-        else {
-            insulinUnitsTextView.setText(finalUnitsStr + " units");
-        }
-
-        //Showing how much units came from each part
-        foodTextView = (TextView)findViewById(R.id.slidingFactorTextView);
-        String carbGramAmountStr = df.format(carbGramsAmount);
-        if (carbGramsAmount == 1) {
-            foodTextView.setText("From Food: " + carbGramAmountStr + " unit");
-        }
-        else {
-            foodTextView.setText("From Food: " + carbGramAmountStr + " units");
-        }
-        slidingFactorTextView = (TextView)findViewById(R.id.foodTextView);
-        slidingFactorUnits = finalUnits - carbGramsAmount;
-        String slidingFactorUnitsStr = df.format(slidingFactorUnits);
-        if (slidingFactorUnits == 1) {
-            slidingFactorTextView.setText("Sliding Factor: " + slidingFactorUnitsStr + " unit");
-        }
-        else {
-            slidingFactorTextView.setText("Sliding Factor: " + slidingFactorUnitsStr + " units");
-        }
+        DisplayInsulinDosage(insulinTotal, insulinFromCarbs, insulinFromBloodSugar);
     }
 
     @Override
@@ -99,4 +59,15 @@ public class ShowInsulin extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void DisplayInsulinDosage(double insulinTotal, double insulinFromCarbs, double insulinFromBloodSugar) {
+        DecimalFormat decimalFormat = new DecimalFormat();
+
+        decimalFormat.setMaximumFractionDigits(2);
+
+        insulinUnitsTextView.setText(decimalFormat.format(insulinTotal) + " units");
+        foodTextView.setText("From Food: " + decimalFormat.format(insulinFromCarbs) + " units");
+        slidingFactorTextView.setText("Sliding Factor: " + decimalFormat.format(insulinFromBloodSugar) + " unit");
+    }
+
 }

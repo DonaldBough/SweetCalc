@@ -14,7 +14,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Measured Blood Sugar"
         android:id="@+id/measuredTextView"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textColor="#333333" />
 
     <EditText
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/carbUnitSpinner"
         android:layout_alignTop="@+id/carbsTextView"
-        android:layout_alignStart="@+id/button" />
+        android:layout_alignStart="@+id/showInsulinButton" />
 
     <EditText
         android:layout_width="wrap_content"

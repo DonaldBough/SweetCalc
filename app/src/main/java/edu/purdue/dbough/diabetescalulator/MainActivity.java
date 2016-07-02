@@ -16,10 +16,9 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends Activity {
-    public final static String EXTRA_MESSAGE = "edu.purdue.dbough.diabetescalculator.MESSAGE";
+    public final static String INSULIN_MESSAGE = "edu.purdue.dbough.diabetescalculator.MESSAGE";
     private final int CARB_SERVING_UNIT = 1;
     private final int GRAMS_IN_CARB_UNIT = 15;
-
     EditText targetSugarField;
     EditText measuredBloodSugarField;
     EditText carbsConsumedField;
@@ -30,14 +29,14 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (SignAgreement.AgreedToTerms(getApplicationContext())) {
-            setContentView(R.layout.activity_sign_agreement);
-        }
-        else {
+        if (!SignAgreement.AgreedToTerms(getApplicationContext())) {
             setContentView(R.layout.activity_main);
         }
+        else {
+            setContentView(R.layout.activity_sign_agreement);
+        }
 
-        LoadAndSetDefaults();
+        LoadDefaults();
     }
 
     @Override
@@ -64,16 +63,18 @@ public class MainActivity extends Activity {
     }
 
     //Sets default values to forms from preference file
-    private void LoadAndSetDefaults() {
-        targetSugarField = (EditText)findViewById(R.id.targetField);
-        correctiveField = (EditText)findViewById(R.id.correctionField);
-        carbUnitSpinner = (Spinner)findViewById(R.id.carbUnitSpinner);
+    private void LoadDefaults() {
+        targetSugarField = (EditText) findViewById(R.id.targetField);
+        measuredBloodSugarField = (EditText) findViewById(R.id.measuredSugarField);
+        carbsConsumedField = (EditText) findViewById(R.id.carbsField);
+        correctiveField = (EditText) findViewById(R.id.correctionField);
+        carbUnitSpinner = (Spinner) findViewById(R.id.carbUnitSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.carbUnitArray,
                 android.R.layout.simple_spinner_item);
         SharedPreferences defaultValuesPref = getApplicationContext().getSharedPreferences //Load default values
                 ("edu.purdue.dbough.diabetescalculator.PREFERENCE", MODE_PRIVATE);
         int defaultTargetBloodSugar = defaultValuesPref.getInt("edu.purdue.dbough.diabetescalculator.TARGET", 0);
-        int defaultCorrectiveFactor = defaultValuesPref.getInt("edu.purdue.dbough.diabetescalculator.FACTOR", 0);
+        float defaultCorrectiveFactor = defaultValuesPref.getFloat("edu.purdue.dbough.diabetescalculator.FACTOR", 0);
         int defaultCarbUnitOption = defaultValuesPref.getInt("edu.purdue.dbough.diabetescalculator.UNIT", 0);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -96,20 +97,22 @@ public class MainActivity extends Activity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("edu.purdue.dbough.diabetescalculator.IS_INSTALLED", "User has agreed to the " +
                 "following: \n" + getString(R.string.legal_Agreement));
-        editor.commit();
+        editor.apply();
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 
     public void OnClickShowInsulinButton(View view) {
-        int targetBloodSugar = Integer.parseInt(targetSugarField.toString());
-        int measuredBloodSugar = Integer.parseInt(measuredBloodSugarField.toString());
+        int targetBloodSugar = Integer.parseInt(targetSugarField.getText().toString());
+        int measuredBloodSugar = Integer.parseInt(measuredBloodSugarField.getText().toString());
         int currSelectedSpinner = carbUnitSpinner.getSelectedItemPosition();
-        double carbsConsumed = Double.parseDouble(carbsConsumedField.toString());
-        double correctiveFactor = Double.parseDouble(correctiveField.toString());
+        double carbsConsumed = Double.parseDouble(carbsConsumedField.getText().toString());
+        double correctiveFactor = Double.parseDouble(correctiveField.getText().toString());
         double insulinFromCarbs;
         double insulinFromBloodSugar;
+        double insulinTotal;
         DiabetesFormula diabetesFormula;
+        Bundle bundleInsulinDose = new Bundle();
         Intent intent = new Intent (this, ShowInsulin.class);
 
         //Converting carbs into selected unit
@@ -118,19 +121,22 @@ public class MainActivity extends Activity {
         }
 
         diabetesFormula = new DiabetesFormula(targetBloodSugar, measuredBloodSugar, carbsConsumed, correctiveFactor);
+        insulinTotal = diabetesFormula.GetInuslinDoseTotal();
         insulinFromCarbs = diabetesFormula.GetInsulinDoseFromCarbs();
         insulinFromBloodSugar = diabetesFormula.GetInsulinDosageFromBloodSugar();
 
-        SaveNewDefaultsLogBloodSugar(targetBloodSugar, correctiveFactor, currSelectedSpinner, carbsConsumed);
+        SaveNewDefaultsLogBloodSugar(targetBloodSugar, measuredBloodSugar, correctiveFactor, currSelectedSpinner,
+                                     carbsConsumed);
 
-        //TODO send updated bundle and fix ShowInsulin.java
-        intent.putExtra(EXTRA_MESSAGE, fakeBundle);
+        bundleInsulinDose.putDouble("insulinTotal", insulinTotal);
+        bundleInsulinDose.putDouble("insulinFromCarbs", insulinFromCarbs);
+        bundleInsulinDose.putDouble("insulinFromBloodSugar", insulinFromBloodSugar);
+        intent.putExtra(INSULIN_MESSAGE, bundleInsulinDose);
         startActivity(intent);
-
     }
     
-    public void SaveNewDefaultsLogBloodSugar(int targetBloodSugar, double correctiveFactor, int currSelectedSpinner,
-                                             double carbsConsumed) {
+    public void SaveNewDefaultsLogBloodSugar(int targetBloodSugar, double measuredBloodSugar, double correctiveFactor,
+                                             int currSelectedSpinner, double carbsConsumed) {
         //Save Target and Corrective Factor values
         Toast toast;
         Context context = getApplicationContext();
@@ -156,10 +162,10 @@ public class MainActivity extends Activity {
 
             //Saves time, measured blood sugar, target blood sugar, carbs, & corrective factor
             outputData = (currTime + ","
-                    + measuredBloodSugarField.getText().toString() + ","
-                    + targetSugarField.getText().toString() + ","
-                    + Double.toString(carbsConsumed) + ","
-                    + correctiveFactor + "\n");
+                        + measuredBloodSugar + ","
+                        + targetBloodSugar + ","
+                        + carbsConsumed + ","
+                        + correctiveFactor + "\n");
             outputStream.write(outputData.getBytes());
             outputStream.close();
         } catch (Exception e) {
@@ -174,4 +180,7 @@ public class MainActivity extends Activity {
     }
 
 
+    public void sendShowSettings(MenuItem item) {
+        System.out.println("Show settings here®");
+    }
 }

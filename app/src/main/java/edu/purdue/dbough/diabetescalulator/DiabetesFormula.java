@@ -8,7 +8,7 @@ public class DiabetesFormula {
     public int measuredBloodSugar;
     public double carbsConsumed;
     public double correctiveFactor;
-    private double insulinDosage;
+    private double insulinDosage = 0;
 
     public DiabetesFormula(int targetBloodSugar, int measuredBloodSugar, double carbsConsumed,
                            double correctiveFactors)
@@ -24,8 +24,12 @@ public class DiabetesFormula {
     private void SolveInsulinDosage() {
         insulinDosage += carbsConsumed;
         if (measuredBloodSugar - targetBloodSugar >= 0) {
-            insulinDosage = ((measuredBloodSugar - targetBloodSugar) / correctiveFactor);
+            insulinDosage += ((measuredBloodSugar - targetBloodSugar) / correctiveFactor);
         }
+    }
+
+    public double GetInuslinDoseTotal() {
+        return insulinDosage;
     }
 
     public double GetInsulinDoseFromCarbs() {
