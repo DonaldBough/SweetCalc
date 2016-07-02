@@ -14,14 +14,46 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
+    <ScrollView
+            android:id="@+id/legalScrollView"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:layout_above="@+id/IAgreeButton"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+    >
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/legal_Agreement"
+                android:id="@+id/IAgreeTextView"
+                />
+
+    </ScrollView>
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+        <!--android:text="@string/legal_Agreement"-->
+        <!--android:id="@+id/IAgreeTextView"-->
+        <!--android:layout_above="@+id/IAgreeButton"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginBottom="143dp"-->
+        <!--android:paddingLeft="30dp"-->
+        <!--android:paddingRight="30dp"-->
+            <!--/>-->
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/legal_Agreement"
-        android:id="@+id/IAgreeTextView"
-        android:layout_above="@+id/IAgreeButton"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="143dp" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Terms and Conditions:"
+        android:id="@+id/termsAndConditionsTextView"
+        android:textSize="35sp"
+        android:layout_marginBottom="35dp"
+        android:layout_above="@+id/legalScrollView"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

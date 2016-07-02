@@ -29,14 +29,21 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Intent intent = new Intent (this, SignAgreement.class);
+//        if (!SignAgreement.AgreedToTerms(getApplicationContext())) {
+//            setContentView(R.layout.activity_sign_agreement);
+//        }
+//        else {
+//            setContentView(R.layout.activity_main);
+//            LoadDefaults();
+//        }
         if (!SignAgreement.AgreedToTerms(getApplicationContext())) {
-            setContentView(R.layout.activity_main);
+            startActivity(intent);
         }
         else {
-            setContentView(R.layout.activity_sign_agreement);
+            setContentView(R.layout.activity_main);
+            LoadDefaults();
         }
-
-        LoadDefaults();
     }
 
     @Override
@@ -72,10 +79,10 @@ public class MainActivity extends Activity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.carbUnitArray,
                 android.R.layout.simple_spinner_item);
         SharedPreferences defaultValuesPref = getApplicationContext().getSharedPreferences //Load default values
-                ("edu.purdue.dbough.diabetescalculator.PREFERENCE", MODE_PRIVATE);
-        int defaultTargetBloodSugar = defaultValuesPref.getInt("edu.purdue.dbough.diabetescalculator.TARGET", 0);
-        float defaultCorrectiveFactor = defaultValuesPref.getFloat("edu.purdue.dbough.diabetescalculator.FACTOR", 0);
-        int defaultCarbUnitOption = defaultValuesPref.getInt("edu.purdue.dbough.diabetescalculator.UNIT", 0);
+                ("edu.purdue.dbough.diabetescalculator.BLOODSUGAR_DEFAULTS", MODE_PRIVATE);
+        int defaultTargetBloodSugar = defaultValuesPref.getInt("edu.purdue.dbough.diabetescalculator.TARGET_BLOODSUGAR", 0);
+        float defaultCorrectiveFactor = defaultValuesPref.getFloat("edu.purdue.dbough.diabetescalculator.CORRECTIVE_FACTOR", 0);
+        int defaultCarbUnitOption = defaultValuesPref.getInt("edu.purdue.dbough.diabetescalculator.DEFAULT_UNIT", 0);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         carbUnitSpinner.setAdapter(adapter);
@@ -91,29 +98,35 @@ public class MainActivity extends Activity {
         }
     }
 
-    public void sendMainActivity(View view) {
-        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences
-                ("edu.purdue.dbough.diabetescalculator.IS_INSTALLED", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putString("edu.purdue.dbough.diabetescalculator.IS_INSTALLED", "User has agreed to the " +
-                "following: \n" + getString(R.string.legal_Agreement));
-        editor.apply();
-        Intent i = new Intent(this, MainActivity.class);
-        startActivity(i);
-    }
-
     public void OnClickShowInsulinButton(View view) {
-        int targetBloodSugar = Integer.parseInt(targetSugarField.getText().toString());
-        int measuredBloodSugar = Integer.parseInt(measuredBloodSugarField.getText().toString());
-        int currSelectedSpinner = carbUnitSpinner.getSelectedItemPosition();
-        double carbsConsumed = Double.parseDouble(carbsConsumedField.getText().toString());
-        double correctiveFactor = Double.parseDouble(correctiveField.getText().toString());
+        int targetBloodSugar;
+        int measuredBloodSugar;
+        int currSelectedSpinner;
+        double carbsConsumed;
+        double correctiveFactor;
         double insulinFromCarbs;
         double insulinFromBloodSugar;
         double insulinTotal;
         DiabetesFormula diabetesFormula;
         Bundle bundleInsulinDose = new Bundle();
         Intent intent = new Intent (this, ShowInsulin.class);
+        Toast errorToast = Toast.makeText(this.getApplicationContext(),
+                           "Whoops, something is empty", Toast.LENGTH_LONG);
+
+        if (targetSugarField.getText().toString().equals("") ||
+            measuredBloodSugarField.getText().toString().equals("") ||
+            carbsConsumedField.getText().toString().equals("") ||
+            correctiveField.getText().toString().equals(""))
+        {
+            errorToast.show();
+            return;
+        }
+
+        targetBloodSugar = Integer.parseInt(targetSugarField.getText().toString());
+        measuredBloodSugar = Integer.parseInt(measuredBloodSugarField.getText().toString());
+        currSelectedSpinner = carbUnitSpinner.getSelectedItemPosition();
+        carbsConsumed = Double.parseDouble(carbsConsumedField.getText().toString());
+        correctiveFactor = Double.parseDouble(correctiveField.getText().toString());
 
         //Converting carbs into selected unit
         if (currSelectedSpinner == CARB_SERVING_UNIT) {
@@ -141,24 +154,23 @@ public class MainActivity extends Activity {
         Toast toast;
         Context context = getApplicationContext();
         SharedPreferences defaultValuesPref = context.getSharedPreferences("edu.purdue.dbough.diabetescalculator." +
-                "PREFERENCE", Context.MODE_PRIVATE);
+                "BLOODSUGAR_DEFAULTS", Context.MODE_PRIVATE);
         SharedPreferences.Editor defaultValuesEditor = defaultValuesPref.edit();
         FileOutputStream outputStream;
         Date time = Calendar.getInstance().getTime();
-        String fileName = "BloodSugarValues";
+        String fileName = "BloodSugarValues.csv";
         String errorMessage = "Whoops, couldn't save your numbers";
         String currTime = time.toString();
         String outputData;
 
-        defaultValuesEditor.putInt("edu.purdue.dbough.diabetescalculator.TARGET", targetBloodSugar);
-        defaultValuesEditor.putFloat("edu.purdue.dbough.diabetescalculator.FACTOR", (float) correctiveFactor);
-        defaultValuesEditor.putInt("edu.purdue.dbough.diabetescalculator.UNIT", currSelectedSpinner);
-        defaultValuesEditor.commit();
+        defaultValuesEditor.putInt("edu.purdue.dbough.diabetescalculator.TARGET_BLOODSUGAR", targetBloodSugar);
+        defaultValuesEditor.putFloat("edu.purdue.dbough.diabetescalculator.CORRECTIVE_FACTOR", (float) correctiveFactor);
+        defaultValuesEditor.putInt("edu.purdue.dbough.diabetescalculator.DEFAULT_UNIT", currSelectedSpinner);
+        defaultValuesEditor.apply();
 
         //Save blood sugar values for analytical algorithms one day
         try {
-            outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
-
+            outputStream = openFileOutput(fileName, Context.MODE_APPEND);
 
             //Saves time, measured blood sugar, target blood sugar, carbs, & corrective factor
             outputData = (currTime + ","
