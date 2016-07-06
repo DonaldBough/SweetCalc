@@ -20,6 +20,8 @@
 
     <string name="default_correctivefactor">50.00</string>
 
+    <string name="default_GramsInCarbServing">15.00</string>
+
     <string name="legal_Agreement">
         Thanks to Icons8 for the great, free icons! Check them out at https://icons8.com \n
         \n

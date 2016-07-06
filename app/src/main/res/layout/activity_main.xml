@@ -132,7 +132,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
 
             android:text="Finger Prick-Monitor"
-            android:id="@+id/textView" android:layout_above="@+id/handEmojiImageView"
+            android:id="@+id/fingerPrickTextView" android:layout_above="@+id/handEmojiImageView"
             android:layout_centerHorizontal="true"/>
     <ImageView
             android:layout_width="wrap_content"
@@ -142,6 +142,27 @@
             android:contentDescription="Hand for finger pricker"
             android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
             android:layout_marginBottom="32dp"/>
+
+    <ImageButton
+            android:id="@+id/leftArrowButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="OnClickFingerPrickArrow"
+            android:tag="leftArrow"
+            android:src="@drawable/leftarrow"
+            android:layout_alignBottom="@+id/handEmojiImageView" android:layout_toStartOf="@+id/fingerPrickTextView"
+            android:layout_marginBottom="57dp"/>
+
+    <ImageButton
+            android:id="@+id/rightArrowButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="OnClickFingerPrickArrow"
+            android:tag="rightArrow"
+            android:src="@drawable/rightarrow"
+            android:layout_alignBottom="@+id/handEmojiImageView" android:layout_toEndOf="@+id/fingerPrickTextView"
+            android:layout_marginBottom="57dp"/>
+
 
 
 </RelativeLayout>

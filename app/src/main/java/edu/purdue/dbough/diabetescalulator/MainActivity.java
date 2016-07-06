@@ -18,10 +18,12 @@ import java.util.Date;
 
 public class MainActivity extends Activity {
     public final static String INSULIN_MESSAGE = "edu.purdue.dbough.diabetescalculator.MESSAGE";
-    private final int CARB_SERVING_UNIT = 1;
-    private final int GRAMS_IN_CARB_UNIT = 15;
+    private int CARB_SERVING_UNIT_INDEX = 1;
+    private int fingerPrickCounter = 0;
+    private double gramsInCarbServing = 0;
     EditText measuredBloodSugarField;
     EditText carbsConsumedField;
+    ImageView handImage;
     Spinner carbUnitSpinner;
 
     @Override
@@ -35,7 +37,7 @@ public class MainActivity extends Activity {
         else {
             setContentView(R.layout.activity_main);
             PreferenceManager.setDefaultValues(this, R.xml.preferences, false); //Load default settings
-            LoadDefaults();
+            LoadDefaultsSettings();
         }
     }
 
@@ -58,18 +60,29 @@ public class MainActivity extends Activity {
     }
 
     //Sets default carb unit, intializes view elements
-    private void LoadDefaults() {
+    private void LoadDefaultsSettings() {
         measuredBloodSugarField = (EditText) findViewById(R.id.measuredSugarField);
         carbsConsumedField = (EditText) findViewById(R.id.carbsField);
         carbUnitSpinner = (Spinner) findViewById(R.id.carbUnitSpinner);
+        handImage = (ImageView) findViewById(R.id.handEmojiImageView);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.carbUnitArray,
                 android.R.layout.simple_spinner_item);
         SharedPreferences defaultValuesPref = PreferenceManager.getDefaultSharedPreferences(this);
-        int defaultCarbUnitOption = defaultValuesPref.getInt("pref_CarbUnit", 0);
+        int settingsCarbUnit = defaultValuesPref.getInt("pref_CarbUnit", 0);
+        fingerPrickCounter = defaultValuesPref.getInt("pref_FingerPrick", 0);
 
+        //Set serving size from settings
+        String defaultServing = this.getString(R.string.default_GramsInCarbServing);
+        String settingsServing = defaultValuesPref.getString("pref_GramsInCarbServing", defaultServing);
+        this.gramsInCarbServing = Double.parseDouble(settingsServing);
+
+        //Sets unit choice as carb or serving
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         carbUnitSpinner.setAdapter(adapter);
-        carbUnitSpinner.setSelection(defaultCarbUnitOption);
+        carbUnitSpinner.setSelection(settingsCarbUnit);
+        
+        UpdateFingerImage();
     }
 
     public void OnClickShowInsulinButton(View view) {
@@ -96,8 +109,8 @@ public class MainActivity extends Activity {
         carbsConsumed = Double.parseDouble(carbsConsumedField.getText().toString());
 
         //Converting carbs into selected unit
-        if (currSelectedSpinner == CARB_SERVING_UNIT) {
-            carbsConsumed /= GRAMS_IN_CARB_UNIT;
+        if (currSelectedSpinner == CARB_SERVING_UNIT_INDEX) {
+            carbsConsumed /= gramsInCarbServing;
         }
 
         diabetesFormula = new DiabetesFormula(measuredBloodSugar, carbsConsumed, getApplicationContext());
@@ -128,6 +141,7 @@ public class MainActivity extends Activity {
         String outputData;
 
         defaultValuesEditor.putInt("pref_CarbUnit", currSelectedSpinner);
+        defaultValuesEditor.putInt("pref_FingerPrick", (fingerPrickCounter += 1) % 8);
         defaultValuesEditor.apply();
 
         //Save blood sugar values for analytical algorithms one day
@@ -144,9 +158,56 @@ public class MainActivity extends Activity {
         }
     }
 
+
     public void OnClickMainActivity(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    public void OnClickFingerPrickArrow(View view) {
+        String arrowType = (String) view.getTag();
+
+        if (arrowType.equals("leftArrow")) {
+            this.fingerPrickCounter--;
+            if (this.fingerPrickCounter == -1) this.fingerPrickCounter = 7;
+        }
+        else if (arrowType.equals("rightArrow")) {
+            this.fingerPrickCounter++;
+            if (this.fingerPrickCounter == 8) this.fingerPrickCounter = 0;
+        }
+        UpdateFingerImage();
+    }
+
+    //Sets finger prick-monitor picture to the field fingerPrickCounter
+    private void UpdateFingerImage() {
+        switch (this.fingerPrickCounter) {
+            case 0:
+                handImage.setImageResource(R.drawable.finger1);
+                break;
+            case 1:
+                handImage.setImageResource(R.drawable.finger2);
+                break;
+            case 2:
+                handImage.setImageResource(R.drawable.finger3);
+                break;
+            case 3:
+                handImage.setImageResource(R.drawable.finger4);
+                break;
+            case 4:
+                handImage.setImageResource(R.drawable.finger5);
+                break;
+            case 5:
+                handImage.setImageResource(R.drawable.finger6);
+                break;
+            case 6:
+                handImage.setImageResource(R.drawable.finger7);
+                break;
+            case 7:
+                handImage.setImageResource(R.drawable.finger8);
+                break;
+        }
+
+    }
+
+    //TODO two changes = change in picture. Arrows dont save on exit
 }

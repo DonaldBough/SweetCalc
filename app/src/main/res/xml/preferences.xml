@@ -20,5 +20,11 @@
             android:summary="Measured glucose - target glucose divided by this number"
             android:inputType="numberDecimal"
             android:defaultValue="@string/default_correctivefactor" />
+    <EditTextPreference
+            android:key="pref_GramsInCarbServing"
+            android:title="Grams in Serving"
+            android:summary="Numbers of grams you consider to be 1 serving"
+            android:inputType="numberDecimal"
+            android:defaultValue="@string/default_GramsInCarbServing" />
     </PreferenceCategory>
 </PreferenceScreen>
