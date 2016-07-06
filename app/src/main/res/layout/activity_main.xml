@@ -6,7 +6,70 @@
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
     android:focusableInTouchMode="true"
     android:id="@+id/activity_main"
-    android:onClick="OnMainActivityClick">
+    android:onClick="OnClickMainActivity">
+
+    <!--&lt;!&ndash;Data from settings&ndash;&gt;-->
+
+    <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+            <!--android:text="Target Bloodsugar:"-->
+            <!--android:id="@+id/targetTextView"-->
+            <!--android:textSize="20sp"-->
+            <!--android:textColor="#333333"-->
+            <!--android:layout_alignParentTop="true" android:layout_alignParentStart="true"/>-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                <!--android:text="@string/default_target_bloodsugar"-->
+                <!--android:id="@+id/targetTextViewData"-->
+                <!--android:layout_alignBottom="@+id/targetTextView"-->
+                <!--android:layout_toEndOf="@+id/targetTextView"/>-->
+
+    <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+            <!--android:text="Corrective Factor:"-->
+            <!--android:id="@+id/correctiveTextView"-->
+            <!--android:textSize="20sp"-->
+            <!--android:textColor="#333333"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:layout_below="@+id/targetTextView" android:layout_alignEnd="@+id/targetTextView"/>-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                <!--android:text="@string/default_correctivefactor"-->
+                <!--android:id="@+id/correctiveTextViewData"-->
+                <!--android:layout_alignBottom="@+id/correctiveTextView"-->
+                <!--android:layout_toEndOf="@+id/correctiveTextView"/>-->
+
+    <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+            <!--android:text="Sensitivity Factor:"-->
+            <!--android:id="@+id/sensitivityTextView"-->
+            <!--android:textSize="20sp"-->
+            <!--android:textColor="#333333"-->
+            <!--android:layout_marginTop="30dp"-->
+            <!--android:layout_below="@+id/correctiveTextView" android:layout_alignEnd="@+id/correctiveTextView"/>-->
+
+        <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+                <!--android:text="@string/default_sensitivityfactor"-->
+                <!--android:id="@+id/sensitivityTextViewData"-->
+                <!--android:layout_alignBottom="@+id/sensitivityTextView"-->
+                <!--android:layout_toEndOf="@+id/sensitivityTextView"/>-->
+
+    <!--&lt;!&ndash;End of data from settings&ndash;&gt;-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,7 +78,8 @@
         android:text="Measured Blood Sugar"
         android:id="@+id/measuredTextView"
         android:textSize="20sp"
-        android:textColor="#333333" />
+        android:textColor="#333333"
+        android:layout_alignParentTop="true" android:layout_alignParentStart="true" android:layout_marginTop="20dp"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -32,7 +96,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Carbs in "
         android:id="@+id/carbsTextView"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textColor="#333333"
         android:layout_below="@+id/measuredSugarField"
         android:layout_alignParentStart="true" />
@@ -41,8 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/carbUnitSpinner"
-        android:layout_alignTop="@+id/carbsTextView"
-        android:layout_alignStart="@+id/showInsulinButton" />
+        android:layout_below="@+id/measuredSugarField" android:layout_toEndOf="@+id/carbsTextView"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -54,48 +117,6 @@
         android:layout_below="@+id/carbsTextView"
         android:layout_alignParentLeft="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Target Blood Sugar"
-        android:id="@+id/targetTextView"
-        android:textSize="20dp"
-        android:textColor="#333333"
-        android:layout_below="@+id/carbsField"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:id="@+id/targetField"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/targetTextView"
-        android:layout_alignEnd="@+id/measuredTextView" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Correction Factor"
-        android:id="@+id/correctionTextView"
-        android:textSize="20dp"
-        android:textColor="#333333"
-        android:layout_below="@+id/targetField"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
-        android:id="@+id/correctionField"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/correctionTextView"
-        android:layout_alignParentLeft="true" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,8 +124,24 @@
         android:id="@+id/showInsulinButton"
         android:onClick="OnClickShowInsulinButton"
         android:clickable="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="42dp" />
+
+        android:layout_toEndOf="@+id/carbsField" android:layout_alignBottom="@+id/carbsField"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+
+            android:text="Finger Prick-Monitor"
+            android:id="@+id/textView" android:layout_above="@+id/handEmojiImageView"
+            android:layout_centerHorizontal="true"/>
+    <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/righthandemoji"
+            android:id="@+id/handEmojiImageView"
+            android:contentDescription="Hand for finger pricker"
+            android:layout_alignParentBottom="true" android:layout_centerHorizontal="true"
+            android:layout_marginBottom="32dp"/>
+
 
 </RelativeLayout>

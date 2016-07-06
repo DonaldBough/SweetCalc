@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+            android:title="Factors advised by your doctor" >
     <EditTextPreference
         android:key="pref_TargetBloodSugar"
-        android:title="Target Blood Sugar"
-        android:defaultValue="100" />
+        android:title="Target Blood Sugar (mg/dl)"
+        android:summary="Ideal glucose level"
+        android:inputType="numberDecimal"
+        android:defaultValue= "@string/default_target_bloodsugar" />
     <EditTextPreference
-        android:key="pref_CorrectionFactor"
-        android:title="Correction Factor"
-        android:defaultValue="50" />
+            android:key="pref_SensitivityFactor"
+            android:title="Sensitivity Factor"
+            android:summary="Units of insulin (100 units/ml) taken for every 15 grams of carbs"
+            android:inputType="numberDecimal"
+            android:defaultValue="@string/default_sensitivityfactor" />
+    <EditTextPreference
+            android:key="pref_CorrectionFactor"
+            android:title="Correction Factor"
+            android:summary="Measured glucose - target glucose divided by this number"
+            android:inputType="numberDecimal"
+            android:defaultValue="@string/default_correctivefactor" />
+    </PreferenceCategory>
 </PreferenceScreen>

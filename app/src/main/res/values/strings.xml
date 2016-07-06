@@ -1,12 +1,24 @@
 <resources>
     <string name="app_name">Sweet Calc</string>
+
     <string name="title_activity_show_insulin">Insulin Dosage</string>
+
     <string name="action_settings">Settings</string>
+
     <string-array name="carbUnitArray">
         <item>servings</item>
         <item>grams</item>
     </string-array>
+
     <string name="title_activity_sign_agreement">Welcome</string>
+
+    <string name="title_settings_activity">Settings</string>
+
+    <string name="default_target_bloodsugar">100.00</string>
+
+    <string name="default_sensitivityfactor">1.00</string>
+
+    <string name="default_correctivefactor">50.00</string>
 
     <string name="legal_Agreement">
         Thanks to Icons8 for the great, free icons! Check them out at https://icons8.com \n

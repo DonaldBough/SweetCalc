@@ -25,8 +25,8 @@
             android:label="@string/title_activity_sign_agreement" >
         </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings" >
+                android:name=".SettingsActivity"
+                android:label="@string/title_settings_activity" >
         </activity>
     </application>
 
