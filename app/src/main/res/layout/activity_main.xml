@@ -8,69 +8,6 @@
     android:id="@+id/activity_main"
     android:onClick="OnClickMainActivity">
 
-    <!--&lt;!&ndash;Data from settings&ndash;&gt;-->
-
-    <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:text="Target Bloodsugar:"-->
-            <!--android:id="@+id/targetTextView"-->
-            <!--android:textSize="20sp"-->
-            <!--android:textColor="#333333"-->
-            <!--android:layout_alignParentTop="true" android:layout_alignParentStart="true"/>-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                <!--android:text="@string/default_target_bloodsugar"-->
-                <!--android:id="@+id/targetTextViewData"-->
-                <!--android:layout_alignBottom="@+id/targetTextView"-->
-                <!--android:layout_toEndOf="@+id/targetTextView"/>-->
-
-    <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:text="Corrective Factor:"-->
-            <!--android:id="@+id/correctiveTextView"-->
-            <!--android:textSize="20sp"-->
-            <!--android:textColor="#333333"-->
-            <!--android:layout_marginTop="30dp"-->
-            <!--android:layout_below="@+id/targetTextView" android:layout_alignEnd="@+id/targetTextView"/>-->
-
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                <!--android:text="@string/default_correctivefactor"-->
-                <!--android:id="@+id/correctiveTextViewData"-->
-                <!--android:layout_alignBottom="@+id/correctiveTextView"-->
-                <!--android:layout_toEndOf="@+id/correctiveTextView"/>-->
-
-    <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:text="Sensitivity Factor:"-->
-            <!--android:id="@+id/sensitivityTextView"-->
-            <!--android:textSize="20sp"-->
-            <!--android:textColor="#333333"-->
-            <!--android:layout_marginTop="30dp"-->
-            <!--android:layout_below="@+id/correctiveTextView" android:layout_alignEnd="@+id/correctiveTextView"/>-->
-
-        <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-                <!--android:text="@string/default_sensitivityfactor"-->
-                <!--android:id="@+id/sensitivityTextViewData"-->
-                <!--android:layout_alignBottom="@+id/sensitivityTextView"-->
-                <!--android:layout_toEndOf="@+id/sensitivityTextView"/>-->
-
-    <!--&lt;!&ndash;End of data from settings&ndash;&gt;-->
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

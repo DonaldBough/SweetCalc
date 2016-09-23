@@ -18,9 +18,8 @@ import java.util.Date;
 
 public class MainActivity extends Activity {
     public final static String INSULIN_MESSAGE = "edu.purdue.dbough.diabetescalculator.MESSAGE";
-    private int CARB_SERVING_UNIT_INDEX = 1;
-    private int fingerPrickCounter = 0;
-    private double gramsInCarbServing = 0;
+    private int fingerPrickCounter = 0; //Keeps track of which finger user should prick
+    private double gramsInCarbServing = 0; //Grams user considers to be a carb
     EditText measuredBloodSugarField;
     EditText carbsConsumedField;
     ImageView handImage;
@@ -31,6 +30,8 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Intent intent = new Intent (this, SignAgreement.class);
+
+        //Sign legal agreement if user hasn't already
         if (!SignAgreement.AgreedToTerms(getApplicationContext())) {
             startActivity(intent);
         }
@@ -59,13 +60,14 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    //Sets default carb unit, intializes view elements
+    //Sets default carb unit, initializes view elements
     private void LoadDefaultsSettings() {
         measuredBloodSugarField = (EditText) findViewById(R.id.measuredSugarField);
         carbsConsumedField = (EditText) findViewById(R.id.carbsField);
         carbUnitSpinner = (Spinner) findViewById(R.id.carbUnitSpinner);
         handImage = (ImageView) findViewById(R.id.handEmojiImageView);
 
+        //Get user's carb previous unit drop-down choice and the last pricked finger
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.carbUnitArray,
                 android.R.layout.simple_spinner_item);
         SharedPreferences defaultValuesPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -81,13 +83,16 @@ public class MainActivity extends Activity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         carbUnitSpinner.setAdapter(adapter);
         carbUnitSpinner.setSelection(settingsCarbUnit);
-        
+
+        //Updates the hand image to the fingerPrickCounter
         UpdateFingerImage();
     }
 
+    //Get ready to show insulin dosage
     public void OnClickShowInsulinButton(View view) {
         int measuredBloodSugar;
         int currSelectedSpinner;
+        int CARB_SERVING_UNIT_INDEX = 1;
         double carbsConsumed;
         double insulinFromFood;
         double insulinFromBloodSugar;
@@ -108,23 +113,24 @@ public class MainActivity extends Activity {
         currSelectedSpinner = carbUnitSpinner.getSelectedItemPosition();
         carbsConsumed = Double.parseDouble(carbsConsumedField.getText().toString());
 
-        //Converting carbs into selected unit
+        //Converting carbs into the selected unit
         if (currSelectedSpinner == CARB_SERVING_UNIT_INDEX) {
             carbsConsumed /= gramsInCarbServing;
         }
 
         diabetesFormula = new DiabetesFormula(measuredBloodSugar, carbsConsumed, getApplicationContext());
-        insulinTotal = diabetesFormula.GetInuslinDoseTotal();
-        insulinFromFood = diabetesFormula.GetInsulinDoseFromFood();
+        insulinTotal = diabetesFormula.GetInsulinDoseTotal();
+        insulinFromFood = diabetesFormula.GetInsulinDosageFromFood();
         insulinFromBloodSugar = diabetesFormula.GetInsulinDosageFromBloodSugar();
 
+        //Saves currently selected carb unit along with blood sugar level
         SaveNewDefaultsLogBloodSugar(measuredBloodSugar, currSelectedSpinner, carbsConsumed);
 
         bundleInsulinDose.putDouble("insulinTotal", insulinTotal);
         bundleInsulinDose.putDouble("insulinFromFood", insulinFromFood);
         bundleInsulinDose.putDouble("insulinFromBloodSugar", insulinFromBloodSugar);
         intent.putExtra(INSULIN_MESSAGE, bundleInsulinDose);
-        startActivity(intent);
+        startActivity(intent); //Start ShowInsulin activity
     }
 
     //Save Target and Corrective Factor values
@@ -140,6 +146,7 @@ public class MainActivity extends Activity {
         String currTime = time.toString();
         String outputData;
 
+        UpdateFingerImage(); //Saves changes from clicking arrows
         defaultValuesEditor.putInt("pref_CarbUnit", currSelectedSpinner);
         defaultValuesEditor.putInt("pref_FingerPrick", (fingerPrickCounter += 1) % 8);
         defaultValuesEditor.apply();

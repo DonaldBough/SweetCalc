@@ -46,9 +46,9 @@ public class SignAgreement extends Activity {
         String isAgreementSigned;
 
         agreementPreference = context.getSharedPreferences
-                ("edu.purdue.dbough.diabetescalculator.IS_INSTALLED", Context.MODE_PRIVATE);
+                ("edu.purdue.dbough.diabetescalculator.SIGNED_AGREEMENT", Context.MODE_PRIVATE);
         isAgreementSigned = agreementPreference.getString
-                ("edu.purdue.dbough.diabetescalculator.IS_INSTALLED", "Agreement Unsigned");
+                ("edu.purdue.dbough.diabetescalculator.SIGNED_AGREEMENT", "Agreement Unsigned");
 
         if (isAgreementSigned.equals("Agreement Unsigned")) return false;
         return true;
@@ -56,13 +56,15 @@ public class SignAgreement extends Activity {
 
     public void sendMainActivity(View view) {
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences
-                                        ("edu.purdue.dbough.diabetescalculator.IS_INSTALLED", Context.MODE_PRIVATE);
+                                        ("edu.purdue.dbough.diabetescalculator.SIGNED_AGREEMENT", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Intent i = new Intent(this, MainActivity.class);
+        Intent i2 = new Intent(this, SettingsActivity.class);
 
-        editor.putString("edu.purdue.dbough.diabetescalculator.IS_INSTALLED", "User has agreed to the " +
+        editor.putString("edu.purdue.dbough.diabetescalculator.SIGNED_AGREEMENT", "User has agreed to the " +
                 "following: \n" + getString(R.string.legal_Agreement));
         editor.apply();
         startActivity(i);
+        startActivity(i2);
     }
 }

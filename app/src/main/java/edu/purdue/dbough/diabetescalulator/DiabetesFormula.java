@@ -16,6 +16,7 @@ public class DiabetesFormula {
     private double sensitivityFactor;
     Context context;
 
+    //Used to find the insulin dosage amount based on user settings
     public DiabetesFormula(double measuredBloodSugar, double carbsConsumed , Context context) {
         this.measuredBloodSugar = measuredBloodSugar;
         this.carbsConsumed = carbsConsumed;
@@ -25,29 +26,32 @@ public class DiabetesFormula {
         SolveInsulinDosage();
     }
 
+    //Do simple math over user's target blood sugar and sensitivity factor
+    //to get insulin dosage
     private void SolveInsulinDosage() {
-        if (measuredBloodSugar - targetBloodSugar >= 0) {
+        if (measuredBloodSugar - targetBloodSugar >= 0 && correctiveFactor != 0) {
             insulinDosage += (measuredBloodSugar - targetBloodSugar);
-
-            if (correctiveFactor != 0) insulinDosage /= correctiveFactor;
+            insulinDosage /= correctiveFactor; //Extra insulin for higher measured blood sugar level
         }
 
-        if (sensitivityFactor != 0) insulinDosage += (carbsConsumed / sensitivityFactor);
+        if (sensitivityFactor != 0)
+            insulinDosage += (carbsConsumed / sensitivityFactor); //Insulin from food
         else insulinDosage = 0;
     }
 
-    public double GetInuslinDoseTotal() {
+    public double GetInsulinDoseTotal() {
         return insulinDosage;
     }
 
     public double GetInsulinDosageFromBloodSugar() {
-        double insulinFromFood = GetInsulinDoseFromFood();
-        return insulinDosage - insulinFromFood;
+        return insulinDosage - GetInsulinDosageFromFood();
     }
 
-    public double GetInsulinDoseFromFood() {
-        if (sensitivityFactor != 0) return (carbsConsumed / sensitivityFactor);
-        else return 0;
+    public double GetInsulinDosageFromFood() {
+        if (sensitivityFactor != 0)
+            return (carbsConsumed / sensitivityFactor);
+
+        return 0;
     }
 
     //Loads defaults from settings

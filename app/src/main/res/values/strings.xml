@@ -23,13 +23,22 @@
     <string name="default_GramsInCarbServing">15.00</string>
 
     <string name="legal_Agreement">
-        Thanks to Icons8 for the great, free icons! Check them out at https://icons8.com \n
+        Contacting Us \n
         \n
-        SweetCalc Privacy Policy \n
+        If there are any questions regarding the app or privacy policy, you may contact us using the information below.
+        \n
+        \n
+        donaldbough@gmail.com
+        \n
+        \n
+        SweetCalc Privacy Policy
+        \n
+        \n
         This privacy policy has been compiled to better serve those who are concerned with how their Personally Identifiable Information (PII) is being used online. PII, as described in US privacy law and information security, is information that can be used on its own or with other information to identify, contact, or locate a single person, or to identify an individual in context. Please read our privacy policy carefully to get a clear understanding of how we collect, use, protect or otherwise handle your Personally Identifiable Information in accordance with our website.
-
+        \n
         By using this application, I understand SweetCalc is in Beta and not a completely functional health application, or an application regulated by medical professionals. I will not hold developers for any complications that come from my misuse of the app or faulty functioning of the app.
-
+        \n
+        \n
         What personal information do we collect from the people that visit our blog, website or app?
 
         When ordering or registering on our site, as appropriate, you may be asked to enter your Glucose Levels or other details to help you with your experience.
@@ -138,15 +147,12 @@
 
         If at any time you would like to unsubscribe from receiving future emails, you can email us at
         and we will promptly remove you from ALL correspondence.
-
-
-        Contacting Us
-
-        If there are any questions regarding this privacy policy, you may contact us using the information below.
-        
-        donaldbough@gmail.com
+        \n \n
+        Thanks to Icons8 for the great, free icons! Check them out at https://icons8.com
+        \n
+        \n
         SweetCalc
-
+        \n
         Last Edited on 2016-07-02
     </string>
 

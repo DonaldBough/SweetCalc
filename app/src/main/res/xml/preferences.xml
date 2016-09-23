@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory
-            android:title="Factors advised by your doctor" >
+            android:title="ONLY use factors advised by your doctor" >
     <EditTextPreference
         android:key="pref_TargetBloodSugar"
         android:title="Target Blood Sugar (mg/dl)"
@@ -17,7 +17,7 @@
     <EditTextPreference
             android:key="pref_CorrectionFactor"
             android:title="Correction Factor"
-            android:summary="Measured glucose - target glucose divided by this number"
+            android:summary="(Measured glucose minus target glucose) divided by this number"
             android:inputType="numberDecimal"
             android:defaultValue="@string/default_correctivefactor" />
     <EditTextPreference

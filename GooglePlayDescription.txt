@@ -1,0 +1,9 @@
+SweetCalc- Diabetes Calculator
+
+Diabetes suddenly becomes a little bit, Sweeter!
+
+Being a diabetic can be frustrating enough when worrying about the hundreds of different factors that affect your blood sugar. By using factors advised by your medical professional, Sweet Calc can help figure out your insulin dosage for you!
+
+Of course, with some having special factors others might not have, be sure to double check the dosages to be sure you are getting the right amount of recommended insulin.
+
+As a newly diagnosed type 1 diabetic, I hope SweetCalc makes your life a little sweeter as well!
