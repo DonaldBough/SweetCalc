@@ -50,10 +50,11 @@ public class SignAgreement extends Activity {
         isAgreementSigned = agreementPreference.getString
                 ("edu.purdue.dbough.diabetescalculator.SIGNED_AGREEMENT", "Agreement Unsigned");
 
-        if (isAgreementSigned.equals("Agreement Unsigned")) return false;
-        return true;
+        return isAgreementSigned.equals("Agreement Unsigned");
     }
 
+    //Go back to main activity when user agrees to terms and conditions
+    //Called by IAgreeButton onClick
     public void sendMainActivity(View view) {
         SharedPreferences sharedPref = getApplicationContext().getSharedPreferences
                                         ("edu.purdue.dbough.diabetescalculator.SIGNED_AGREEMENT", Context.MODE_PRIVATE);
