@@ -27,7 +27,7 @@ public class DiabetesFormula {
     }
 
     //Do simple math over user's target blood sugar and sensitivity factor
-    //to get insulin dosage
+    //to get insulin dosage.
     private void SolveInsulinDosage() {
         if (measuredBloodSugar - targetBloodSugar >= 0 && correctiveFactor != 0) {
             insulinDosage += (measuredBloodSugar - targetBloodSugar);
